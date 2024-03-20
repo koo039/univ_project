@@ -27,21 +27,19 @@ bool is_full();
 void search_node_with_col(char);
 void search_node_with_col(char );
 void display_cont();
-
+void delete_node(int,int);
+void display_conta();
 int main()
 {
-int k = '1';
-for(int i=1;i<=MAX_ROW;i++){
-    for(int j=1;j<=MAX_COL;j++){
-        insert_node(i,j,k);
-        k++;
-    }
 
-}
+insert_node(1,1,'1');
+insert_node(1,2,'1');
+insert_node(1,3,'1');
 
 
-display_cont();
-search_node_with_col('1');
+delete_node(1,2);
+
+display_conta();
 
 printf("\n");
 return 0;
@@ -88,6 +86,7 @@ else{
         else{
             row_tab[i-1]->nl = col_tab[j-1];
             col_tab[j-1] = row_tab[i-1];
+
         }
 }
     else if(col_tab[j-1] == NULL){
@@ -109,8 +108,9 @@ else{
         node * cur2 = col_tab[j-1];
         node * node = create_new_node(i,j,data);
         if(col_tab[j-1]->i < i){
-        while(cur2->nl!=NULL)
+        while(cur2->nl!=NULL && cur2->nl->i < node->i)
             cur2 = cur2->nl;
+        node->nl = cur2->nl;
         cur2->nl=node;
         }
         else{
@@ -118,9 +118,10 @@ else{
             col_tab[j-1] = node;
         }
         cur2 = row_tab[i-1];
-        if(row_tab[i-1]->j < j){
-        while(cur2->nc!=NULL)
+        if(row_tab[i-1]->j < j ){
+        while(cur2->nc!=NULL && cur2->nc->j < node->j)
             cur2 = cur2->nc;
+        node->nc = cur2->nc;
         cur2->nc=node;
         }
         else{
@@ -135,9 +136,68 @@ count ++;
 }
 
 void delete_node(int i,int j){
-if(col_tab[j-1] == NULL && row_tab[i-1] == NULL)
-    printf("this node not exist");
+node * cur = col_tab[j-1];
+node * cur1 = NULL;
+node * cura = row_tab[i-1];
+node * cura1 = NULL;
 
+while(cur->i != i){
+cur1 = cur;
+cur = cur->nl;
+}
+
+while(cura->j != j){
+cura1 = cura;
+cura = cura->nc;
+}
+
+
+if(cur->nc == NULL && cur->nl == NULL){
+    if(cur1 == NULL)
+        col_tab[j-1] = NULL;
+    else
+        cur1->nl=NULL;
+    if(cura1 == NULL)
+        row_tab[i-1]=NULL;
+    else
+        cura1->nc = NULL;
+    free(cur);
+}
+else if(cur->nl == NULL){
+    if(cur1 == NULL)
+        col_tab[j-1] = NULL;
+    else
+        cur1->nl=NULL;
+    if(cura1 == NULL)
+        row_tab[i-1]=cura->nc;
+    else
+        cura1->nc = cura->nc;
+    free(cur);
+}
+else if(cur->nc == NULL){
+    if(cur1 == NULL)
+        col_tab[j-1] = cur->nl;
+    else
+        cur1->nl=cur->nl;
+    if(cura1 == NULL)
+        row_tab[i-1]=NULL;
+    else
+        cura1->nc = NULL;
+    free(cur);
+}
+else{
+    if(cur1 == NULL)
+        col_tab[j-1] = cur->nl;
+    else
+        cur1->nl=cur->nl;
+
+    if(cura1 == NULL)
+        row_tab[i-1]=cura->nc;
+    else
+        cura1->nc = cura->nc;
+
+    free(cur);
+}
 
 
 }
@@ -190,7 +250,7 @@ return count == 0;
 
 
 
-/*bool test_col(){
+bool test_col(){
 int c =0,p=0;
 for(int i=0;i<MAX_ROW;i++){
     node * cur = row_tab[i];
@@ -212,8 +272,8 @@ for(int i=0;i<MAX_COL;i++){
 }
 return p == c;
 
-}*/
-/*void display_conta(){
+}
+void display_conta(){
     for(int i=0;i<MAX_ROW;i++){
         printf("%p-",row_tab[i]);
     }
@@ -232,7 +292,7 @@ printf("\n\n\n\n");
 
 }
 
-}*/
+}
 
 
 

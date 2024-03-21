@@ -37,9 +37,9 @@ insert_node(1,2,'1');
 insert_node(1,3,'1');
 
 
-delete_node(1,2);
+delete_node(1,1);
 
-display_conta();
+display_cont();
 
 printf("\n");
 return 0;
@@ -247,54 +247,6 @@ return count == MAX_COL * MAX_ROW;
 bool is_empty(){
 return count == 0;
 }
-
-
-
-bool test_col(){
-int c =0,p=0;
-for(int i=0;i<MAX_ROW;i++){
-    node * cur = row_tab[i];
-    while(cur!=NULL){
-
-    c++;
-    cur = cur->nc;
-}
-
-}
-for(int i=0;i<MAX_COL;i++){
-    node * cur = col_tab[i];
-    while(cur!=NULL){
-
-    p++;
-    cur = cur->nl;
-}
-
-}
-return p == c;
-
-}
-void display_conta(){
-    for(int i=0;i<MAX_ROW;i++){
-        printf("%p-",row_tab[i]);
-    }
-    printf("\n\n\n");
-    for(int i=0;i<MAX_COL;i++){
-        printf("%p-",col_tab[i]);
-    }
-    printf("\n\n\n");
-for(int i=0;i<MAX_ROW;i++){
-    node * cur = row_tab[i];
-    while(cur!=NULL){
-    printf("%p-%d-%d-%c-%p-%p \t",cur,cur->i,cur->j,cur->data,cur->nc,cur->nl);
-    cur = cur->nc;
-}
-printf("\n\n\n\n");
-
-}
-
-}
-
-
 
 
 void display_cont(){
